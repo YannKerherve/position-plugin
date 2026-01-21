@@ -1,0 +1,127 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Contact | Windy Plugin Support</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+    <style>
+        :root {
+            --windy-red: #e53935;
+            --windy-dark: #222222;
+            --windy-grey: #333333;
+            --text-light: #eeeeee;
+        }
+
+        body { 
+            background-color: var(--windy-dark); 
+            color: var(--text-light);
+            font-family: 'Helvetica Neue', Arial, sans-serif;
+        }
+
+        .navbar { background-color: rgba(34, 34, 34, 0.95) !important; border-bottom: 1px solid #444; }
+        
+        .contact-card {
+            background-color: var(--windy-grey);
+            border: none;
+            border-radius: 12px;
+            transition: 0.3s;
+        }
+
+        .social-link {
+            display: flex;
+            align-items: center;
+            padding: 15px;
+            color: white;
+            text-decoration: none;
+            border-radius: 8px;
+            background: rgba(255,255,255,0.05);
+            margin-bottom: 10px;
+            transition: 0.2s;
+        }
+
+        .social-link:hover {
+            background: var(--windy-red);
+            color: white;
+            transform: translateX(10px);
+        }
+
+        .social-link i {
+            font-size: 1.5rem;
+            width: 40px;
+        }
+
+        .timezone-badge {
+            background-color: #444;
+            color: #ffcc00;
+            padding: 5px 15px;
+            border-radius: 20px;
+            display: inline-block;
+            font-size: 0.9rem;
+            margin-top: 10px;
+        }
+    </style>
+</head>
+<body>
+
+<nav class="navbar navbar-expand-lg navbar-dark sticky-top">
+    <div class="container">
+        <a class="navbar-brand fw-bold" href="index.html">
+            <i class="fas fa-wind text-danger me-2"></i>WINDY PLUGIN
+        </a>
+        <div class="ms-auto">
+            <a href="index.html" class="btn btn-sm btn-outline-light me-2">Home</a>
+            <a href="tcp.html" class="btn btn-sm btn-outline-light me-2">TCP</a>
+            <a href="com.html" class="btn btn-sm btn-outline-light">COM</a>
+        </div>
+    </div>
+</nav>
+
+<div class="container my-5">
+    <div class="row justify-content-center">
+        <div class="col-md-8 text-center mb-5">
+            <h1 class="display-4 fw-bold">Get in Touch</h1>
+            <p class="lead">Have a question or need technical assistance with the plugin?</p>
+            <div class="timezone-badge">
+                <i class="fas fa-clock me-2"></i>Current Timezone: <strong>France (CET/CEST)</strong>
+            </div>
+        </div>
+
+        <div class="col-md-6">
+            <div class="contact-card p-4 shadow">
+                <a href="mailto:ya.kerherve@gmail.com" class="social-link">
+                    <i class="fas fa-envelope text-danger"></i>
+                    <span>ya.kerherve@gmail.com</span>
+                </a>
+
+                <a href="https://github.com/YannKerherve" target="_blank" class="social-link">
+                    <i class="fab fa-github"></i>
+                    <span>GitHub / YannKerherve</span>
+                </a>
+
+                <a href="https://community.windy.com/user/yann-kerherve" target="_blank" class="social-link">
+                    <i class="fas fa-users"></i>
+                    <span>Windy Community Profile</span>
+                </a>
+
+                <a href="https://www.linkedin.com/in/yann-kerherv%C3%A9/" target="_blank" class="social-link">
+                    <i class="fab fa-linkedin"></i>
+                    <span>LinkedIn / Yann Kerhervé</span>
+                </a>
+
+                <a href="https://www.instagram.com/yann_krhrv/?hl=fr" target="_blank" class="social-link">
+                    <i class="fab fa-instagram"></i>
+                    <span>Instagram / @yann_krhrv</span>
+                </a>
+            </div>
+        </div>
+    </div>
+</div>
+
+<footer class="text-center py-5">
+    <p class="text-muted small">Support available during French business hours.</p>
+</footer>
+
+</body>
+</html>

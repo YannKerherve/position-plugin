@@ -1,0 +1,158 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>COM Port Setup | Windy Plugin</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+    <style>
+        :root { --windy-red: #e53935; --windy-dark: #222222; --windy-grey: #333333; --text-light: #eeeeee; }
+        body { background-color: var(--windy-dark); color: var(--text-light); font-family: 'Helvetica Neue', Arial, sans-serif; }
+        
+        .navbar { background-color: rgba(34, 34, 34, 0.95) !important; border-bottom: 1px solid #444; }
+        
+        /* Stepper UI */
+        .step-content { display: none; background: var(--windy-grey); padding: 40px; border-radius: 12px; border: 1px solid #444; min-height: 400px; }
+        .step-content.active { display: block; animation: fadeIn 0.5s; }
+        
+        .progress { height: 8px; background-color: #444; margin-bottom: 30px; }
+        .progress-bar { background-color: var(--windy-red); }
+
+        .btn-next { background-color: var(--windy-red); color: white; border: none; padding: 10px 30px; font-weight: bold; border-radius: 4px; }
+        .btn-prev { background-color: #555; color: white; border: none; padding: 10px 30px; border-radius: 4px; margin-right: 10px; }
+
+        /* Animation Pop-up Simulé */
+        .mock-popup {
+            background: #fff;
+            color: #333;
+            width: 250px;
+            border-radius: 8px;
+            margin: 20px auto;
+            padding: 10px;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.5);
+            animation: popUpBounce 1s infinite alternate;
+        }
+        .mock-item { padding: 5px; border-bottom: 1px solid #eee; font-size: 0.9rem; text-align: left; cursor: pointer; }
+        .mock-item.selected { background: #007bff; color: white; }
+
+        @keyframes fadeIn { from { opacity: 0; transform: translateY(10px); } to { opacity: 1; transform: translateY(0); } }
+        @keyframes popUpBounce { from { transform: scale(1); } to { transform: scale(1.05); } }
+    </style>
+</head>
+<body>
+
+<nav class="navbar navbar-expand-lg navbar-dark sticky-top">
+    <div class="container">
+        <a class="navbar-brand fw-bold" href="index.html"><i class="fas fa-wind text-danger me-2"></i>WINDY PLUGIN</a>
+        <div class="ms-auto"><a href="index.html" class="btn btn-sm btn-outline-light">Back to Home</a></div>
+    </div>
+</nav>
+
+<div class="container my-5">
+    <div class="row justify-content-center">
+        <div class="col-md-9">
+            <h2 class="text-center mb-4">USB / COM Port Setup</h2>
+            
+            <div class="progress">
+                <div id="progressBar" class="progress-bar" role="progressbar" style="width: 16%;"></div>
+            </div>
+
+            <div class="step-content active" id="step1">
+                <h3><i class="fas fa-search-location text-danger me-2"></i> 1. Check Hardware</h3>
+                <p class="fs-5">Ensure your GPS is plugged in and recognized by your computer.</p>
+                <div class="alert alert-danger bg-dark text-danger border-danger mt-4">
+                    <i class="fas fa-lock me-2"></i> <strong>Important:</strong> Close any other software (like OpenCPN or GPSGate) that might be using the same COM port.
+                </div>
+                <div class="text-end mt-5">
+                    <button class="btn btn-next" onclick="nextStep(2)">Next Step <i class="fas fa-arrow-right"></i></button>
+                </div>
+            </div>
+
+            <div class="step-content" id="step2">
+                <h3><i class="fas fa-tachometer-alt text-danger me-2"></i> 2. Select Baudrate</h3>
+                <p>In the plugin settings, choose the communication speed (Baudrate).</p>
+                <div class="p-4 bg-dark rounded border border-secondary mt-3">
+                    <select class="form-select bg-dark text-white border-secondary">
+                        <option>4800 (Standard NMEA 0183)</option>
+                        <option selected>9600</option>
+                        <option>38400 (Fast / AIS)</option>
+                        <option>115200</option>
+                    </select>
+                </div>
+                <p class="mt-3 small text-muted">If your required baudrate is not listed, <a href="contact.html" class="text-danger">contact me here</a>.</p>
+                <div class="text-end mt-4">
+                    <button class="btn btn-prev" onclick="nextStep(1)">Back</button>
+                    <button class="btn btn-next" onclick="nextStep(3)">Next Step <i class="fas fa-arrow-right"></i></button>
+                </div>
+            </div>
+
+            <div class="step-content text-center" id="step3">
+                <h3><i class="fas fa-mouse-pointer text-danger me-2"></i> 3. Initialize</h3>
+                <p class="fs-5">Click on the button:</p>
+                <button class="btn btn-lg btn-windy shadow my-4" style="background-color: #e53935; color: white; border: none; padding: 15px 30px; font-weight: bold;">CONNECT TO GPS</button>
+                <div class="text-end mt-5">
+                    <button class="btn btn-prev" onclick="nextStep(2)">Back</button>
+                    <button class="btn btn-next" onclick="nextStep(4)">Next Step <i class="fas fa-arrow-right"></i></button>
+                </div>
+            </div>
+
+            <div class="step-content text-center" id="step4">
+                <h3><i class="fas fa-window-restore text-danger me-2"></i> 4. Select Device</h3>
+                <p>A pop-up window will appear. Select your GPS device from the list.</p>
+                
+                <div class="mock-popup shadow-lg">
+                    <div class="fw-bold small mb-2 text-muted border-bottom">Select COM Port</div>
+                    <div class="mock-item">COM1 - Serial Port</div>
+                    <div class="mock-item selected"><i class="fas fa-check me-2"></i> COM3 - USB GPS Receiver</div>
+                    <div class="mock-item text-muted" style="font-size: 0.7rem;">COM4 - Bluetooth Link</div>
+                </div>
+
+                <div class="text-end mt-5">
+                    <button class="btn btn-prev" onclick="nextStep(3)">Back</button>
+                    <button class="btn btn-next" onclick="nextStep(5)">Next Step <i class="fas fa-arrow-right"></i></button>
+                </div>
+            </div>
+
+            <div class="step-content" id="step5">
+                <h3><i class="fas fa-link text-danger me-2"></i> 5. Final Connection</h3>
+                <p class="fs-5">Press the <strong>"Connexion"</strong> button in the pop-up window.</p>
+                <div class="text-center">
+                    <div class="spinner-border text-danger mt-4" role="status"></div>
+                    <p class="mt-2 small text-muted">Establishing link...</p>
+                </div>
+                <div class="text-end mt-5">
+                    <button class="btn btn-prev" onclick="nextStep(4)">Back</button>
+                    <button class="btn btn-next" onclick="nextStep(6)">Next Step <i class="fas fa-arrow-right"></i></button>
+                </div>
+            </div>
+
+            <div class="step-content text-center" id="step6">
+                <h3><i class="fas fa-anchor text-success me-2"></i> 6. Success!</h3>
+                <p class="fs-4">You are now transmitting live data.</p>
+                <p>Switch back to <strong>Windy.com</strong> to see your vessel's track and live sensor data.</p>
+                <div class="mt-5 p-3 bg-dark border border-success rounded">
+                    <i class="fas fa-check-circle text-success fs-1"></i>
+                    <p class="mt-2">Vessel Visible on Map</p>
+                </div>
+                <div class="text-end mt-4">
+                    <button class="btn btn-prev" onclick="nextStep(5)">Back</button>
+                    <a href="index.html" class="btn btn-next">Back to Home <i class="fas fa-home ms-2"></i></a>
+                </div>
+            </div>
+
+        </div>
+    </div>
+</div>
+
+<script>
+    function nextStep(stepNumber) {
+        document.querySelectorAll('.step-content').forEach(step => step.classList.remove('active'));
+        document.getElementById('step' + stepNumber).classList.add('active');
+        const progress = (stepNumber / 6) * 100;
+        document.getElementById('progressBar').style.width = progress + '%';
+    }
+</script>
+
+</body>
+</html>
