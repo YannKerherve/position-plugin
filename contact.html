@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html lang="fr">
+<html lang="en">
 <head>
     <meta charset="UTF-8">
     <link rel="icon" type="image/png" href="logo-facion.png">
@@ -64,28 +64,33 @@
             margin-top: 10px;
         }
 
-        /* Styles pour les sections légales */
+        /* Legal sections styling */
         .legal-section {
-            background-color: rgba(0,0,0,0.2);
-            padding: 40px 0;
+            background-color: rgba(0,0,0,0.3);
+            padding: 60px 0;
             border-top: 1px solid #444;
+            margin-top: 50px;
         }
         .legal-title {
             color: var(--windy-red);
-            font-size: 1.2rem;
+            font-size: 1.1rem;
             text-transform: uppercase;
+            font-weight: bold;
             letter-spacing: 1px;
             margin-bottom: 20px;
         }
         .legal-text {
             font-size: 0.85rem;
             color: var(--text-muted);
-            text-align: justify;
             line-height: 1.6;
+        }
+        .legal-text strong {
+            color: #ddd;
         }
         hr.separator {
             border-top: 1px solid #444;
             margin: 40px 0;
+            opacity: 1;
         }
     </style>
 </head>
@@ -98,8 +103,8 @@
         </a>
         <div class="ms-auto">
             <a href="index.html" class="btn btn-sm btn-outline-light me-2">Home</a>
-            <a href="tcp.html" class="btn btn-sm btn-outline-light me-2">TCP</a>
-            <a href="com.html" class="btn btn-sm btn-outline-light">COM</a>
+            <a href="#" class="btn btn-sm btn-outline-light me-2">TCP</a>
+            <a href="#" class="btn btn-sm btn-outline-light">COM</a>
         </div>
     </div>
 </nav>
@@ -148,26 +153,29 @@
 <section class="legal-section">
     <div class="container">
         <div class="row">
-            <div class="col-md-6 mb-4">
+            <div class="col-md-4 mb-4">
                 <h2 class="legal-title">Credits</h2>
                 <div class="legal-text">
-                    <p>Ce projet de plugin pour Windy.com a été conçu et développé par <strong>Yann Kerhervé</strong>.</p>
-                    <p>Le développement technique, l'intégration logicielle et le déploiement sont assurés par Yann Kerhervé. Ce projet est réalisé dans le cadre d'un partenariat non rémunéré avec <strong>Windy</strong>.</p>
-                    <p><strong>Technologies utilisées :</strong> HTML, Bootstrap, JavaScript, GitHub Pages.</p>
+                    <p><strong>Development:</strong> This website and the associated Windy plugin were designed and developed by <strong>Yann Kerhervé</strong>.</p>
+                    <p><strong>Partnership:</strong> This project is carried out in a non-remunerated partnership with <strong>Windy.com</strong>.</p>
+                    <p><strong>Hosting:</strong> This support website is hosted via <strong>GitHub Pages</strong>. The plugin itself is hosted and served by <strong>Windy.com</strong>.</p>
                 </div>
             </div>
 
-            <div class="col-md-6 mb-4">
+            <div class="col-md-4 mb-4">
                 <h2 class="legal-title">Legal Notice</h2>
                 <div class="legal-text">
-                    <p><strong>Éditeur du site :</strong> Yann Kerhervé<br>
-                    <strong>Hébergement :</strong> Ce site est hébergé par GitHub Pages (GitHub, Inc., 88 Colin P. Kelly Jr. Street, San Francisco, CA 94107, USA).</p>
-                    
-                    <p><strong>Données personnelles & Cookies :</strong><br>
-                    Ce site web n'utilise <strong>aucun cookie</strong> de traçage, de publicité ou d'analyse comportementale. Aucune donnée d'utilisation n'est collectée ou tracée lors de votre navigation sur ce site.</p>
-                    
-                    <p><strong>Confidentialité du Plugin :</strong><br>
-                    En ce qui concerne le plugin Windy associé, <strong>aucune information n'est collectée</strong> par le développeur. Toutes les données sont traitées exclusivement en local sur votre appareil et ne sont en aucun cas récupérées, transmises ou stockées sur un serveur externe.</p>
+                    <p><strong>Website Editor:</strong> Yann Kerhervé.</p>
+                    <p><strong>Privacy (Website):</strong> This website does not use any cookies and does not track user activity. No personal data is collected during your visit.</p>
+                    <p><strong>Privacy (Plugin):</strong> No personal information or data is collected by the developer within the plugin. All data is processed <strong>locally</strong> on the user's device and is never retrieved or stored externally. This approach complies with <strong>CNIL</strong> recommendations regarding data minimization and privacy.</p>
+                </div>
+            </div>
+
+            <div class="col-md-4 mb-4">
+                <h2 class="legal-title">Terms of Service</h2>
+                <div class="legal-text">
+                    <p><strong>Plugin Hosting:</strong> Since the plugin is hosted on Windy.com, users must refer to <strong>Windy’s General Terms of Use</strong> for platform-related regulations.</p>
+                    <p><strong>External Links:</strong> This site may contain links to third-party platforms. The editor is not responsible for the content or privacy policies of these external sites.</p>
                 </div>
             </div>
         </div>
@@ -176,11 +184,13 @@
 
         <div class="row">
             <div class="col-12">
-                <h2 class="legal-title">Liability (Limitation de responsabilité)</h2>
-                <div class="legal-text">
-                    <p><strong>AVERTISSEMENT IMPORTANT :</strong> Ce site et le plugin associé sont fournis à titre informatif et expérimental uniquement. <strong>Windy et ce plugin ne doivent en aucun cas être utilisés pour la navigation maritime ou l'anticollision.</strong></p>
+                <h2 class="legal-title text-center">Liability Disclaimer</h2>
+                <div class="legal-text border border-danger p-3 rounded">
+                    <p><strong>Critical Warning:</strong> This website and the plugin are provided for informational and experimental purposes only. <strong>Windy and this plugin are strictly NOT to be used for navigation or anti-collision purposes.</strong></p>
                     
-                    <p>Le développeur ne peut être tenu responsable de tout problème, accident, dommage direct ou indirect lié à l'utilisation du plugin. L'utilisateur reconnaît que les données de positionnement et de météo peuvent être erronées, incomplètes ou retardées. <strong>En utilisant ce plugin, vous le faites à vos propres risques et périls, en toute connaissance de cause.</strong> Vous êtes seul responsable de la sécurité de votre navigation et du respect des règles internationales pour prévenir les abordages en mer (COLREG).</p>
+                    <p>The developer shall not, under any circumstances, be held liable for any issues, accidents, or damages (direct or indirect) resulting from the use of the plugin or the information provided on this site. Users acknowledge that marine data can be inaccurate, incomplete, or delayed.</p>
+                    
+                    <p><strong>By using this plugin, you do so at your own risk and peril, with full knowledge of these facts.</strong> It is the user's sole responsibility to ensure safe navigation in compliance with international regulations (COLREG).</p>
                 </div>
             </div>
         </div>
@@ -189,7 +199,7 @@
 
 <footer class="text-center py-5">
     <p class="text-muted small">Support available during French business hours.</p>
-    <p class="text-muted" style="font-size: 0.7rem;">&copy; 2026 - 2027 Yann Kerhervé. All rights reserved.</p>
+    <p class="text-muted" style="font-size: 0.7rem;">&copy; 2024 Yann Kerhervé. Not an official Windy product.</p>
 </footer>
 
 </body>
