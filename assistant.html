@@ -286,7 +286,7 @@ const steps = {
     desc: "Let's start by identifying the device you're on.",
     progress: 10,
     choices: [
-      { icon: "fas fa-laptop",     label: "Computer",          sub: "Windows, Mac or Linux", next: "s2" },
+      { icon: "fas fa-laptop",     label: "Computer",          sub: "Windows, Mac and Linux coming soon", next: "s2" },
       { icon: "fas fa-mobile-alt", label: "Phone / Tablet",    sub: "iOS or Android",        disabled: true }
     ]
   },
@@ -305,7 +305,7 @@ const steps = {
   s3: {
     badge: "Step 3 / Local network",
     title: "Connection via local network",
-    info: `Download and install <strong>Windy TCP Bridge</strong>. Grant it network access if your firewall prompts you, then launch the application.`,
+    info: `Download and install <a href="https://drive.google.com/file/d/1BvpJXb97cT6LAj9je9wgkjN5dqxASpB9/view?usp=sharing"><strong>Windy TCP Bridge</strong></a>. Grant it network access if your firewall prompts you, then launch the application.`,
     progress: 36,
     choices: [
       { icon: "fas fa-check-circle",    label: "I know the IP address and TCP port",  sub: "My GPS / AIS sends data to a known IP and port",      next: "s4" },
