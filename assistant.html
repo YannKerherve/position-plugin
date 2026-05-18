@@ -1,0 +1,616 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Windy Ship Position — Configuration Assistant</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Barlow+Condensed:wght@400;600;700&family=Barlow:wght@400;500;600&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
+<style>
+  :root {
+    --red: #e53935;
+    --red-dark: #b71c1c;
+    --red-glow: rgba(229,57,53,0.12);
+    --dark: #111214;
+    --surface: #1a1c1f;
+    --surface2: #22252a;
+    --border: rgba(255,255,255,0.08);
+    --border-hover: rgba(229,57,53,0.4);
+    --text: #f0f0f0;
+    --text-muted: #8a8f9a;
+    --teal: #1D9E75;
+    --amber: #EF9F27;
+    --font-display: 'Barlow Condensed', sans-serif;
+    --font-body: 'Barlow', sans-serif;
+  }
+  *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+  body {
+    background-color: var(--dark);
+    color: var(--text);
+    font-family: var(--font-body);
+    min-height: 100vh;
+    overflow-x: hidden;
+  }
+  body::before {
+    content: '';
+    position: fixed; inset: 0;
+    background-image:
+      linear-gradient(rgba(229,57,53,0.03) 1px, transparent 1px),
+      linear-gradient(90deg, rgba(229,57,53,0.03) 1px, transparent 1px);
+    background-size: 60px 60px;
+    pointer-events: none; z-index: 0;
+  }
+  nav {
+    position: sticky; top: 0; z-index: 100;
+    background: rgba(17,18,20,0.92);
+    backdrop-filter: blur(12px);
+    border-bottom: 1px solid var(--border);
+    padding: 0 2rem; height: 56px;
+    display: flex; align-items: center; justify-content: space-between;
+  }
+  .nav-brand {
+    font-family: var(--font-display);
+    font-size: 20px; font-weight: 700; letter-spacing: 1px;
+    color: var(--text); text-decoration: none;
+    display: flex; align-items: center; gap: 8px;
+  }
+  .nav-brand i { color: var(--red); }
+  .nav-links { display: flex; gap: 8px; }
+  .nav-links a {
+    font-size: 12px; font-weight: 600; letter-spacing: 0.8px;
+    text-transform: uppercase; color: var(--text-muted);
+    text-decoration: none; padding: 6px 12px;
+    border: 1px solid transparent; border-radius: 4px;
+    transition: all 0.2s;
+  }
+  .nav-links a:hover { color: var(--text); border-color: var(--border); }
+  .hero {
+    position: relative; z-index: 1;
+    padding: 5rem 2rem 3rem; text-align: center;
+    border-bottom: 1px solid var(--border);
+  }
+  .hero-badge {
+    display: inline-block;
+    font-size: 11px; font-weight: 600; letter-spacing: 2px;
+    text-transform: uppercase; color: var(--red);
+    border: 1px solid rgba(229,57,53,0.3);
+    padding: 5px 16px; border-radius: 100px; margin-bottom: 1.5rem;
+    animation: fadeUp 0.5s ease both;
+  }
+  .hero h1 {
+    font-family: var(--font-display);
+    font-size: clamp(2.5rem, 7vw, 5rem);
+    font-weight: 700; letter-spacing: 3px;
+    text-transform: uppercase; line-height: 1;
+    animation: fadeUp 0.5s 0.1s ease both;
+  }
+  .hero h1 span { color: var(--red); }
+  .hero p {
+    font-size: 17px; color: var(--text-muted);
+    margin-top: 1rem; max-width: 500px; margin-inline: auto;
+    animation: fadeUp 0.5s 0.2s ease both;
+  }
+  .hero-scroll {
+    margin-top: 2.5rem;
+    display: inline-flex; align-items: center; gap: 8px;
+    color: var(--red); font-size: 13px; font-weight: 600;
+    letter-spacing: 1px; text-transform: uppercase;
+    text-decoration: none;
+    animation: fadeUp 0.5s 0.3s ease both;
+  }
+  .hero-scroll i { animation: bounce 1.5s ease infinite; }
+  main {
+    position: relative; z-index: 1;
+    max-width: 760px; margin: 0 auto;
+    padding: 3rem 1.5rem 6rem;
+  }
+  .progress-wrap {
+    display: flex; align-items: center; gap: 12px; margin-bottom: 2rem;
+  }
+  .progress-track {
+    flex: 1; height: 3px; background: var(--surface2); border-radius: 2px; overflow: hidden;
+  }
+  .progress-fill {
+    height: 100%; background: var(--red); border-radius: 2px;
+    transition: width 0.4s cubic-bezier(0.4,0,0.2,1);
+  }
+  .progress-label { font-size: 12px; font-weight: 600; color: var(--text-muted); letter-spacing: 0.5px; white-space: nowrap; }
+  .breadcrumb {
+    display: flex; flex-wrap: wrap; align-items: center; gap: 6px;
+    margin-bottom: 1.5rem; min-height: 20px;
+  }
+  .bc-item { font-size: 12px; color: var(--text-muted); cursor: pointer; transition: color 0.2s; }
+  .bc-item:hover { color: var(--red); }
+  .bc-sep { font-size: 12px; color: #333; }
+  .bc-cur { font-size: 12px; color: var(--red); font-weight: 600; }
+  .step-card {
+    background: var(--surface);
+    border: 1px solid var(--border);
+    border-radius: 12px; padding: 2rem;
+    animation: fadeUp 0.35s ease both;
+    position: relative; overflow: hidden;
+  }
+  .step-card::before {
+    content: ''; position: absolute; top: 0; left: 0; right: 0; height: 2px;
+    background: var(--red); border-radius: 12px 12px 0 0;
+  }
+  .step-card.success::before { background: var(--teal); }
+  .step-card.contact::before { background: var(--amber); }
+  .step-badge-inner {
+    font-size: 11px; font-weight: 600; letter-spacing: 1.5px;
+    text-transform: uppercase; color: var(--red); margin-bottom: 10px; display: block;
+  }
+  .step-card.success .step-badge-inner { color: var(--teal); }
+  .step-card.contact .step-badge-inner { color: var(--amber); }
+  .step-title {
+    font-family: var(--font-display);
+    font-size: 26px; font-weight: 700; letter-spacing: 1px;
+    color: var(--text); line-height: 1.1; margin-bottom: 0.5rem;
+  }
+  .step-desc { font-size: 15px; color: var(--text-muted); margin-bottom: 1.25rem; line-height: 1.6; }
+  .step-info {
+    background: var(--surface2);
+    border: 1px solid var(--border);
+    border-left: 3px solid var(--red);
+    border-radius: 0 8px 8px 0;
+    padding: 14px 16px;
+    font-size: 14px; color: var(--text-muted);
+    line-height: 1.8; margin-bottom: 1.5rem;
+  }
+  .step-card.success .step-info { border-left-color: var(--teal); }
+  .step-card.contact .step-info { border-left-color: var(--amber); }
+  .step-info strong { color: var(--text); font-weight: 600; }
+  .step-info em { color: var(--red); font-style: normal; font-weight: 500; }
+  .step-info .path {
+    display: inline-block;
+    background: rgba(229,57,53,0.08);
+    border: 1px solid rgba(229,57,53,0.2);
+    border-radius: 4px; padding: 3px 8px;
+    font-size: 12px; font-family: monospace;
+    color: #ccc; margin: 6px 0; line-height: 1.6;
+  }
+  .step-info ol { padding-left: 1.3rem; margin-top: 6px; }
+  .step-info ol li { margin-bottom: 5px; }
+  .choices { display: flex; flex-direction: column; gap: 8px; }
+  .choice-btn {
+    display: flex; align-items: center; gap: 14px;
+    background: var(--surface2);
+    border: 1px solid var(--border);
+    border-radius: 8px; padding: 14px 16px;
+    cursor: pointer; text-align: left;
+    color: var(--text); width: 100%;
+    transition: border-color 0.2s, background 0.2s, transform 0.15s;
+    position: relative; overflow: hidden;
+  }
+  .choice-btn::after {
+    content: ''; position: absolute; inset: 0;
+    background: var(--red-glow); opacity: 0; transition: opacity 0.2s;
+  }
+  .choice-btn:hover { border-color: var(--border-hover); transform: translateX(3px); }
+  .choice-btn:hover::after { opacity: 1; }
+  .choice-btn:active { transform: translateX(2px) scale(0.99); }
+  .choice-btn.disabled { opacity: 0.35; cursor: not-allowed; transform: none !important; }
+  .choice-btn.disabled::after { display: none; }
+  .choice-icon {
+    width: 38px; height: 38px; border-radius: 8px;
+    background: rgba(229,57,53,0.1);
+    display: flex; align-items: center; justify-content: center; flex-shrink: 0;
+  }
+  .choice-icon i { font-size: 16px; color: var(--red); }
+  .choice-text { flex: 1; }
+  .choice-label { font-size: 15px; font-weight: 600; color: var(--text); }
+  .choice-sub { font-size: 13px; color: var(--text-muted); margin-top: 1px; }
+  .choice-arrow { color: #444; font-size: 14px; flex-shrink: 0; transition: color 0.2s; }
+  .choice-btn:hover .choice-arrow { color: var(--red); }
+  .soon-badge {
+    font-size: 10px; font-weight: 700; letter-spacing: 1px;
+    text-transform: uppercase; color: #555;
+    background: #2a2a2a; padding: 3px 8px; border-radius: 100px; flex-shrink: 0;
+  }
+  .back-btn {
+    display: inline-flex; align-items: center; gap: 6px;
+    font-size: 13px; font-weight: 500; color: var(--text-muted);
+    background: none; border: none; cursor: pointer;
+    padding: 0; margin-top: 1.25rem; transition: color 0.2s;
+  }
+  .back-btn:hover { color: var(--text); }
+  .restart-btn {
+    display: inline-flex; align-items: center; gap: 8px;
+    font-size: 13px; font-weight: 600; letter-spacing: 0.5px;
+    text-transform: uppercase; color: var(--text-muted);
+    background: none; border: 1px solid var(--border); border-radius: 6px;
+    padding: 10px 20px; cursor: pointer; margin-top: 1rem; transition: all 0.2s;
+  }
+  .restart-btn:hover { color: var(--text); border-color: rgba(255,255,255,0.2); }
+  footer {
+    position: relative; z-index: 1;
+    border-top: 1px solid var(--border);
+    padding: 2.5rem; text-align: center;
+    color: var(--text-muted); font-size: 13px;
+  }
+  footer span { color: var(--red); font-weight: 600; }
+  @keyframes fadeUp {
+    from { opacity: 0; transform: translateY(12px); }
+    to   { opacity: 1; transform: translateY(0); }
+  }
+  @keyframes bounce {
+    0%, 100% { transform: translateY(0); }
+    50% { transform: translateY(5px); }
+  }
+  @media (max-width: 600px) {
+    .nav-links { display: none; }
+    .hero { padding: 3rem 1.25rem 2rem; }
+    .step-card { padding: 1.5rem; }
+    .step-title { font-size: 22px; }
+  }
+</style>
+</head>
+<body>
+
+<nav>
+  <a class="nav-brand" href="#"><i class="fas fa-wind"></i> WINDY SHIP POSITION</a>
+  <div class="nav-links">
+    <a href="#">TCP Guide</a>
+    <a href="#">COM Guide</a>
+    <a href="#">Contact</a>
+  </div>
+</nav>
+
+<header class="hero">
+  <div class="hero-badge">Configuration Assistant</div>
+  <h1>Connect the<br><span>Ship Position</span> plugin</h1>
+  <p>Answer a few questions to connect your GPS or AIS to Windy in minutes.</p>
+  <a href="#wizard" class="hero-scroll">Get started <i class="fas fa-chevron-down"></i></a>
+</header>
+
+<main id="wizard">
+  <div class="progress-wrap">
+    <div class="progress-track"><div class="progress-fill" id="progress-fill" style="width:5%"></div></div>
+    <span class="progress-label" id="progress-label">Step 1</span>
+  </div>
+  <div class="breadcrumb" id="breadcrumb"></div>
+  <div id="step-container"></div>
+</main>
+
+<footer>
+  Developed by <span>Yann Kerhervé</span> &nbsp;·&nbsp; © 2026 – All rights reserved
+</footer>
+
+<script>
+const steps = {
+
+  s1: {
+    badge: "Step 1 / Device",
+    title: "What device are you using?",
+    desc: "Let's start by identifying the device you're on.",
+    progress: 10,
+    choices: [
+      { icon: "fas fa-laptop",     label: "Computer",          sub: "Windows, Mac or Linux", next: "s2" },
+      { icon: "fas fa-mobile-alt", label: "Phone / Tablet",    sub: "iOS or Android",        disabled: true }
+    ]
+  },
+
+  s2: {
+    badge: "Step 2 / Connection",
+    title: "How is your computer connected to the GPS / AIS?",
+    progress: 22,
+    choices: [
+      { icon: "fas fa-wifi",          label: "Wi-Fi",               sub: "Local wireless network",  next: "s3" },
+      { icon: "fas fa-usb",           label: "USB",                 sub: "Direct USB cable",         next: "s8" },
+      { icon: "fas fa-network-wired", label: "Ethernet / RJ45 port", sub: "Local wired network",    next: "s3" }
+    ]
+  },
+
+  s3: {
+    badge: "Step 3 / Local network",
+    title: "Connection via local network",
+    info: `Download and install <strong>Windy TCP Bridge</strong>. Grant it network access if your firewall prompts you, then launch the application.`,
+    progress: 36,
+    choices: [
+      { icon: "fas fa-check-circle",    label: "I know the IP address and TCP port",  sub: "My GPS / AIS sends data to a known IP and port",      next: "s4" },
+      { icon: "fas fa-laptop-code",     label: "I want to use third-party software",  sub: "OpenCPN, Adrena, TimeZero…",                          next: "s6" },
+      { icon: "fas fa-question-circle", label: "I don't know the IP / TCP port",      sub: "And I don't want to use third-party software",         next: "s7" }
+    ]
+  },
+
+  s4: {
+    badge: "Step 4 / Windy TCP Bridge",
+    title: "Configure Windy TCP Bridge",
+    info: `Enter the <strong>IP address</strong> and <strong>TCP port</strong> of your GPS / AIS in Windy TCP Bridge, then click <em>Start Transmission</em>.`,
+    progress: 50,
+    choices: [
+      { icon: "fas fa-file-alt",           label: "Text is scrolling continuously",     sub: "Letters, numbers… data is coming in!", next: "s5"  },
+      { icon: "fas fa-exclamation-circle", label: "Nothing appears or an error message", sub: "Connection problem",                   next: "s5b" }
+    ]
+  },
+
+  s5b: {
+    badge: "Step 5.1 / Troubleshooting",
+    title: "Checks before trying again",
+    info: `Please check the following:<br><br>
+• Make sure your <strong>GPS / AIS device is powered on</strong>.<br>
+• If you are using third-party software, ensure it is <strong>running</strong> and <strong>receiving data</strong> from the boat.<br><br>
+• Check in:<br>
+<span class="path">Control Panel → System and Security → Windows Defender Firewall → Allowed apps</span><br>
+that <strong>Windy TCP Bridge 3.2.0</strong> is allowed to communicate on both <strong>public and private</strong> networks.`,
+    progress: 55,
+    choices: [
+      { icon: "fas fa-redo", label: "Done — retry step 4", next: "s4" }
+    ]
+  },
+
+  s5: {
+    badge: "Step 5 / Windy.com",
+    title: "Check on Windy.com",
+    info: `Go to <strong>windy.com</strong>, open the <em>Ship Position</em> plugin.<br>Select <strong>Show</strong> and verify that <strong>TCP</strong> is selected.`,
+    progress: 74,
+    choices: [
+      { icon: "fas fa-check-circle",    label: "It's working!",                      sub: "Position appears on the map",            next: "s5_ok"      },
+      { icon: "fas fa-broadcast-tower", label: "My sensors are not recognised",       sub: "Anemometer, wind vane…",                 next: "s5_sensors" },
+      { icon: "fas fa-eye-slash",       label: "Position is not showing",             sub: "Firewall check needed",                  next: "s5_fw"      }
+    ]
+  },
+
+  s5_ok: {
+    badge: "All done!",
+    title: "Congratulations, everything works!",
+    info: `Your position is showing on Windy. Have a great voyage and safe sailing!`,
+    isEnd: true, isSuccess: true, progress: 100
+  },
+
+  s5_sensors: {
+    badge: "Contact developer",
+    title: "Sensors not recognised",
+    info: `Contact the developer and attach:<br>• A <strong>screenshot</strong> of the Windy plugin<br>• A <strong>large sample</strong> of the text displayed in Windy TCP Bridge`,
+    isEnd: true, isContact: true, progress: 90
+  },
+
+  s5_fw: {
+    badge: "Step 5 / Firewall",
+    title: "Windows Firewall check",
+    info: `Go to:<br>
+<span class="path">Control Panel → System and Security → Windows Defender Firewall → Allowed apps</span><br><br>
+Check that <strong>Windy TCP Bridge 3.2.0</strong> is allowed to communicate on both <strong>public and private</strong> networks.`,
+    progress: 82,
+    choices: [
+      { icon: "fas fa-redo",           label: "Done — try again",          sub: "Go back to the Windy check",    next: "s5"           },
+      { icon: "fas fa-times-circle",   label: "Still no position",         sub: "Contact the developer",          next: "s5_fw_contact" }
+    ]
+  },
+
+  s5_fw_contact: {
+    badge: "Contact developer",
+    title: "Contact the developer",
+    info: `Send the developer:<br>• A <strong>screenshot</strong> of the Windy plugin<br>• A <strong>large sample</strong> of the text displayed in Windy TCP Bridge`,
+    isEnd: true, isContact: true, progress: 90
+  },
+
+  s6: {
+    badge: "Step 6 / Third-party software",
+    title: "Configuration via third-party software",
+    desc: "Select your navigation software:",
+    progress: 46,
+    choices: [
+      { icon: "fas fa-compass",  label: "Adrena",         sub: "General settings → UDP/TCP outputs",          next: "s6_adrena"  },
+      { icon: "fas fa-map",      label: "OpenCPN",        sub: "Options → Connections",                       next: "s6_opencpn" },
+      { icon: "fas fa-globe",    label: "TimeZero",       sub: "Connection wizard → Output data",             next: "s6_tz"      },
+      { icon: "fas fa-cog",      label: "Other software", sub: "Manually configure a TCP output",             next: "s6_other"   }
+    ]
+  },
+
+  s6_adrena: {
+    badge: "Step 6 / Adrena",
+    title: "Adrena configuration",
+    info: `<strong>General settings</strong> → <em>UDP / TCP outputs</em><br>
+• Link type: <strong>TCP</strong><br>
+• Port number: <strong>12345</strong> (or your choice — note it down!)<br>
+• Check all → <strong>Apply</strong>`,
+    progress: 54,
+    choices: [{ icon: "fas fa-arrow-right", label: "Continue → Step 4.1", next: "s4b" }]
+  },
+
+  s6_opencpn: {
+    badge: "Step 6 / OpenCPN",
+    title: "OpenCPN configuration",
+    info: `<strong>Options</strong> → <em>Connections</em> → <em>Add a new connection</em><br>
+• Type: <strong>Network</strong> / Protocol: <strong>TCP</strong><br>
+• IP address: <strong>127.0.0.1</strong> / Port: <strong>12345</strong><br>
+• Output on this port → <strong>Apply</strong>`,
+    progress: 54,
+    choices: [{ icon: "fas fa-arrow-right", label: "Continue → Step 4.1", next: "s4b" }]
+  },
+
+  s6_tz: {
+    badge: "Step 6 / TimeZero",
+    title: "TimeZero configuration",
+    info: `<strong>Connection wizard</strong> → <em>Output data</em> → <em>Add a TCP connection (advanced)</em><br>
+• Address: <strong>127.0.0.1</strong> / Port: <strong>12345</strong><br>
+• Select all → <strong>Next</strong> → <strong>Finish</strong>`,
+    progress: 54,
+    choices: [{ icon: "fas fa-arrow-right", label: "Continue → Step 4.1", next: "s4b" }]
+  },
+
+  s6_other: {
+    badge: "Step 6 / Other software",
+    title: "Other navigation software",
+    info: `Create a <strong>TCP output</strong> on a port of your choice (e.g. <strong>12345</strong>).<br>If it doesn't work, contact the developer.`,
+    progress: 54,
+    choices: [{ icon: "fas fa-arrow-right", label: "Continue → Step 4.1", next: "s4b" }]
+  },
+
+  s4b: {
+    badge: "Step 4.1 / Windy TCP Bridge",
+    title: "Configure Windy TCP Bridge",
+    info: `Enter IP address <strong>127.0.0.1</strong> and the port you chose (e.g. <strong>12345</strong>) in Windy TCP Bridge.<br>
+Make sure the third-party software is <strong>open</strong> and <strong>receiving data</strong> from the boat.<br>
+Click <em>Start Transmission</em>.`,
+    progress: 62,
+    choices: [
+      { icon: "fas fa-file-alt",           label: "Text is scrolling continuously",      sub: "Data is coming in!", next: "s5"  },
+      { icon: "fas fa-exclamation-circle", label: "Nothing appears or an error message",  sub: "Connection problem",  next: "s6"  }
+    ]
+  },
+
+  s7: {
+    badge: "Step 7 / Unknown IP",
+    title: "Find the IP and port without third-party software",
+    progress: 44,
+    choices: [
+      { icon: "fas fa-sliders-h",       label: "The GPS / AIS is configured in another software", sub: "Look for the IP or port in its settings",          next: "s7_soft"    },
+      { icon: "fas fa-search-location", label: "I have no information at all",                    sub: "Use a network scanner (e.g. Angry IP Scanner)",     next: "s7_scan"    },
+      { icon: "fas fa-times-circle",    label: "I still can't find it",                           sub: "Contact the developer",                             next: "s7_contact" }
+    ]
+  },
+
+  s7_soft: {
+    badge: "Step 7 / Via existing software",
+    title: "Look in the software settings",
+    info: `Search the <strong>settings</strong> of the relevant software for the <strong>IP address</strong> and <strong>TCP port</strong> used by your GPS / AIS.`,
+    progress: 48,
+    choices: [{ icon: "fas fa-arrow-right", label: "I found the IP and port → Step 4", next: "s4" }]
+  },
+
+  s7_scan: {
+    badge: "Step 7 / Network scanner",
+    title: "Find the IP with a network scanner",
+    info: `Use your network monitoring tool or software such as <strong>Angry IP Scanner</strong> to find the IP address of your GPS / AIS.<br>
+Also check its <strong>documentation</strong> for the NMEA TCP port number.`,
+    progress: 48,
+    choices: [
+      { icon: "fas fa-arrow-right",  label: "I found the IP and port → Step 4", next: "s4"        },
+      { icon: "fas fa-times-circle", label: "I still can't find it",             next: "s7_contact" }
+    ]
+  },
+
+  s7_contact: {
+    badge: "Contact developer",
+    title: "Contact the developer",
+    info: `Describe your GPS / AIS equipment and your network configuration to the developer.`,
+    isEnd: true, isContact: true, progress: 50
+  },
+
+  s8: {
+    badge: "Step 8 / USB connection",
+    title: "USB GPS / AIS connection",
+    info: `Make sure <strong>no other software or web page</strong> is connected to the GPS via USB — both cannot work at the same time.<br>
+If you need to use software, go to <strong>step 6 (third-party software)</strong>.<br><br>
+Then:<br>
+<ol>
+<li>Go to <strong>windy.com</strong> using <strong>Google Chrome</strong> or <strong>Microsoft Edge</strong></li>
+<li>Open the <em>Ship Position</em> plugin → <strong>Show</strong> → <strong>COM</strong></li>
+<li>Select the <strong>communication speed</strong> of your GPS / AIS (see its documentation). If it is not available, contact the developer.</li>
+<li>Click <strong>Connect</strong></li>
+<li>Select your GPS in the browser popup window, then click <strong>Connect</strong></li>
+</ol>`,
+    progress: 50,
+    choices: [
+      { icon: "fas fa-check-circle",  label: "It's working!",                  sub: "Position appears on Windy",      next: "s5_ok"      },
+      { icon: "fas fa-laptop-code",   label: "I need third-party software",    sub: "OpenCPN, Adrena, etc.",           next: "s6"         },
+      { icon: "fas fa-times-circle",  label: "It's not working",               sub: "Contact the developer",           next: "s7_contact" }
+    ]
+  }
+
+};
+
+let history = [];
+let current = "s1";
+
+function render(id) {
+  const step = steps[id];
+  if (!step) return;
+
+  document.getElementById('progress-fill').style.width = (step.progress || 10) + '%';
+  document.getElementById('progress-label').textContent = step.badge;
+
+  const bc = document.getElementById('breadcrumb');
+  bc.innerHTML = history.map((h, i) => {
+    const s = steps[h];
+    const short = s.badge.split(' / ')[1] || s.badge.split(' / ')[0];
+    return `<span class="bc-item" onclick="jumpTo(${i})">${short}</span><span class="bc-sep">›</span>`;
+  }).join('') + `<span class="bc-cur">${step.badge.split(' / ')[1] || step.badge.split(' / ')[0]}</span>`;
+
+  let cardClass = 'step-card';
+  if (step.isSuccess) cardClass += ' success';
+  else if (step.isContact) cardClass += ' contact';
+
+  let html = `<div class="${cardClass}">
+    <span class="step-badge-inner">${step.badge}</span>
+    <h2 class="step-title">${step.title}</h2>`;
+
+  if (step.desc) html += `<p class="step-desc">${step.desc}</p>`;
+  if (step.info) html += `<div class="step-info">${step.info}</div>`;
+
+  if (step.choices && !step.isEnd) {
+    html += `<div class="choices">`;
+    step.choices.forEach(c => {
+      if (c.disabled) {
+        html += `<button class="choice-btn disabled" disabled>
+          <div class="choice-icon"><i class="${c.icon}"></i></div>
+          <div class="choice-text">
+            <div class="choice-label">${c.label}</div>
+            ${c.sub ? `<div class="choice-sub">${c.sub}</div>` : ''}
+          </div>
+          <span class="soon-badge">Coming soon</span>
+        </button>`;
+      } else {
+        html += `<button class="choice-btn" onclick="goTo('${c.next}')">
+          <div class="choice-icon"><i class="${c.icon}"></i></div>
+          <div class="choice-text">
+            <div class="choice-label">${c.label}</div>
+            ${c.sub ? `<div class="choice-sub">${c.sub}</div>` : ''}
+          </div>
+          <i class="fas fa-chevron-right choice-arrow"></i>
+        </button>`;
+      }
+    });
+    html += `</div>`;
+  }
+
+  if (step.isEnd) {
+    html += `<button class="restart-btn" onclick="restart()">
+      <i class="fas fa-redo"></i> Start over from the beginning
+    </button>`;
+  }
+
+  html += `</div>`;
+
+  if (history.length > 0) {
+    html += `<button class="back-btn" onclick="goBack()">
+      <i class="fas fa-arrow-left"></i> Back
+    </button>`;
+  }
+
+  const container = document.getElementById('step-container');
+  container.innerHTML = html;
+  const card = container.querySelector('.step-card');
+  card.style.animation = 'none';
+  requestAnimationFrame(() => { card.style.animation = 'fadeUp 0.35s ease both'; });
+}
+
+function goTo(id) {
+  history.push(current);
+  current = id;
+  render(current);
+  window.scrollTo({ top: document.getElementById('wizard').offsetTop - 80, behavior: 'smooth' });
+}
+
+function goBack() {
+  if (history.length > 0) { current = history.pop(); render(current); }
+}
+
+function jumpTo(index) {
+  current = history[index];
+  history = history.slice(0, index);
+  render(current);
+}
+
+function restart() {
+  history = []; current = 's1'; render(current);
+  window.scrollTo({ top: document.getElementById('wizard').offsetTop - 80, behavior: 'smooth' });
+}
+
+render('s1');
+</script>
+</body>
+</html>
